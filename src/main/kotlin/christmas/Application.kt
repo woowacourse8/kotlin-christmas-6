@@ -8,7 +8,6 @@ import christmas.view.OutputView
 fun main() {
     val inputView = InputView()
     val outputView = OutputView()
-    val orderService = OrderService()
     val controller = Controller(inputView, outputView)
 
     controller.run()
