@@ -1,5 +1,8 @@
 package christmas
 
+import christmas.view.InputView
+import christmas.view.OutputView
+
 fun main() {
-    TODO("프로그램 구현")
+    InputView().readVisitDate()
 }
