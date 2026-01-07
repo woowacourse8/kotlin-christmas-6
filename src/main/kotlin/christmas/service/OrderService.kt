@@ -1,5 +1,5 @@
 package christmas.service
 
-class OrderService {
+class OrderService(val date: Int) {
 
 }

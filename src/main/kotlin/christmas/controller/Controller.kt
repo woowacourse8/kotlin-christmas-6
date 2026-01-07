@@ -7,8 +7,7 @@ import christmas.view.OutputView
 
 class Controller(
     private val inputView: InputView,
-    private val outputView: OutputView,
-
+    private val outputView: OutputView
 ) {
     fun run() {
         // 기본 메뉴판 로드
@@ -20,9 +19,15 @@ class Controller(
         val date = Util.retryUntilValid {
             inputView.readVisitDate()
         }
-        val order = Util.retryUntilValid {
+        val orders = Util.retryUntilValid {
             inputView.readMenuAndCount(basicMenus)
         }
         outputView.printPreviewMent()
+
+        // 2. 주문 메뉴 출력
+        outputView.printOrders(orders)
+
+        // 3. 할인 전 총주문 금액 출력
+        val sumBeforeDiscount = outputView.printSumBeforeDiscount(orders)
     }
 }
