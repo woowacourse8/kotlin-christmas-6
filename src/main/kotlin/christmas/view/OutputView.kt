@@ -1,5 +1,6 @@
 package christmas.view
 
+import christmas.dto.BenefitResult
 import christmas.model.Order
 import java.text.DecimalFormat
 
@@ -11,58 +12,50 @@ class OutputView {
 
     fun printOrders(orders: List<Order>) {
         println("\n<주문 메뉴>")
-        orders.forEach { (menu, count) ->
-            print("${menu.name} ${count}개\n")
-        }
+        orders.forEach { println("${it.menu.name} ${it.count}개") }
     }
 
-    fun printSumBeforeDiscount(orders: List<Order>): Int {
+    fun printSumBeforeDiscount(amount: Int) {
         println("\n<할인 전 총주문 금액>")
-        val totalPrice = orders.sumOf { it.menu.price * it.count }
-        print("${moneyFormat.format(totalPrice)}원\n")
-        return totalPrice
+        println("${moneyFormat.format(amount)}원")
     }
 
-    fun printGiftMenu(totalPrice: Int): Boolean {
+    fun printGiftMenu(isGiftTarget: Boolean) {
         println("\n<증정 메뉴>")
-        if (totalPrice >= 120000) {
-            print("샴페인 1개\n")
-            return true
-        }
-        print("없음\n")
-        return false
+        if (isGiftTarget) println("샴페인 1개") else println("없음")
     }
 
-    fun printBenefit(
-        christmasDiscount: Int,
-        weekdayDiscount: Int,
-        weekendDiscount: Int,
-        specialDiscount: Int,
-        isGiftTarget: Boolean
-    ): Int {
-        var totalBenefit = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount
-        if (isGiftTarget) totalBenefit += 25000
-
+    fun printBenefitDetails(result: BenefitResult) {
         println("\n<혜택 내역>")
-        if (christmasDiscount != 0) print("크리스마스 디데이 할인: -${moneyFormat.format(christmasDiscount)}원\n")
-        if (weekdayDiscount != 0) print("평일 할인: -${moneyFormat.format(weekdayDiscount)}원\n")
-        if (weekendDiscount != 0) print("주말 할인: -${moneyFormat.format(weekendDiscount)}원\n")
-        if (specialDiscount != 0) print("특별 할인: -${moneyFormat.format(specialDiscount)}원\n")
-        if (isGiftTarget) print("증정 이벤트: -25,000원\n")
-        if (totalBenefit == 0) print("없음\n")
+        if (result.totalBenefitAmount == 0) {
+            println("없음")
+            return
+        }
 
-        println("\n<총혜택 금액>")
-        print("${moneyFormat.format(-totalBenefit)}원\n")
-        return totalBenefit
+        printDiscount("크리스마스 디데이 할인",result.christmasDiscount)
+        printDiscount("평일 할인", result.weekdayDiscount)
+        printDiscount("주말 할인", result.weekendDiscount)
+        printDiscount("특별 할인", result.specialDiscount)
+        if (result.isGiftTarget) println("증정 이벤트: -25,000원")
     }
 
-    fun printTotalPrice(price: Int) {
+    private fun printDiscount(title: String, amount: Int) {
+        if (amount > 0)
+            println("$title: -${moneyFormat.format(amount)}원")
+    }
+
+    fun printTotalBenefitAmount(amount: Int) {
+        println("\n<총혜택 금액>")
+        println("${moneyFormat.format(-amount)}원")
+    }
+
+    fun printExpectedPayment(amount: Int) {
         println("\n<할인 후 예상 결제 금액>")
-        print("${moneyFormat.format(price)}원\n")
+        println("${moneyFormat.format(amount)}원")
     }
 
     fun printEventBadge(badge: String) {
         println("\n<12월 이벤트 배지>")
-        print(badge)
+        println(badge)
     }
 }

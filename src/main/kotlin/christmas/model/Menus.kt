@@ -16,15 +16,9 @@ class Menus {
             Menu(MenuType.DESSERT, "아이스크림", 5000),
             Menu(MenuType.DRINK, "제로콜라", 3000),
             Menu(MenuType.DRINK, "레드와인", 60000),
-            Menu(MenuType.DRINK, "샴페인", 25000)
+            Menu(MenuType.DRINK, "샴페인", 25000),
         )
     }
 
-    fun findByName(name: String): Menu? {
-        return menus.find { it.name == name }
-    }
-
-    fun findAll(): List<Menu> {
-        return menus
-    }
+    fun findAll() = menus
 }
